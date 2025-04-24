@@ -5,7 +5,7 @@ import { generateToken } from "../JWT/jwt.js";
 
 // signup user
 export async function signup(req,res){
-    const {name,email,password,role}=req.body;
+    const {name,email,password,role="customer"}=req.body;
     try {
         if(!name || !email ||!password) throw new Error("All fields are requried");
 

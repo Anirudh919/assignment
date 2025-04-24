@@ -7,7 +7,7 @@ import cors from 'cors'
 import {ticketRouter} from './Routes/ticket.routes.js'
 import {dashboardRoutes} from './Routes/dashboard.routes.js'
 
-
+import {notesRouter} from './Routes/notes.routes.js'
 
 dotenv.config() 
 const app=express()
@@ -29,6 +29,7 @@ app.use("/api/tickets",ticketRouter)
 // app.use('/api/users', userRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 
+app.use('/api/notes', notesRouter);
 app.listen( PORT || 8000,()=>{
     console.log(`server started at ${PORT}`)
     connectToDb()

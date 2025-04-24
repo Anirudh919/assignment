@@ -1,6 +1,7 @@
 import express from 'express';
 // import { bookRoom, cancelRoom, checkoutRoom, createTicket, deleteRoomById, getAllRooms, getBookings, getRoomById, updateRoom } from '../Controllers/ticket.controller.js';
 import { isAuthenticated,validateUser } from '../Middlewares/protectedRoutes.js';
+import { createNotes, getMyNotes, getNoteById, updateNote } from '../Controllers/notes.controllers.js';
 
 
 // export const roomRoutes = express.Router();
@@ -23,30 +24,16 @@ import { isAuthenticated,validateUser } from '../Middlewares/protectedRoutes.js'
 // roomRoutes.delete("/delete/:id", validateUser,deleteRoomById);
 
 
-export const ticketRouter = express.Router();
+export const notesRouter = express.Router();
 
-import {
-  createTicket,
-  deleteTicketById,
-  getAllTickets,
-  getMyTickets,
-  getTicketById,
-  updateTicket
-} from '../Controllers/ticket.controller.js'
+notesRouter.post('/create-notes', validateUser, createNotes); // all for admin, only own for user
+notesRouter.get('/my-notes',validateUser, getMyNotes);
 
+notesRouter.get('/:id', validateUser, getNoteById);
 
-ticketRouter.get('/', validateUser, getAllTickets); // all for admin, only own for user
-ticketRouter.get('/my-tickets',validateUser, getMyTickets);
+notesRouter.put("/update/:id",validateUser,updateNote)
 
 
 
-ticketRouter.get('/:id', validateUser, getTicketById);
-
-ticketRouter.delete("/:id",validateUser,deleteTicketById)
-
-
-ticketRouter.post("/create",validateUser,createTicket)
-
-ticketRouter.put("/update/:id",validateUser,updateTicket)
 
 // module.exports = {ticketRouter};
