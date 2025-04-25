@@ -1,85 +1,78 @@
+import { Notes } from "../Models/notes.models.js";
 
+export async function createNotes(req, res) {
+  try {
+    const { text } = req.body;
+    const user = req.user;
 
-import  {Notes} from '../Models/notes.models.js'
+    // if (!title || !description ) {
+    //     return res.status(400).json({ message: "Please provide all required fields." });
+    // }
 
+    const newNote = await Notes.create({
+      text,
+      createdBy: user?._id.toString(),
+    });
 
-export async function createNotes(req, res) {    
-    try {
-        const { title, description, status } = req.body;
-        const user=req.user
-        
-        if (!title || !description ) {
-            return res.status(400).json({ message: "Please provide all required fields." });
-        }
-
-        const newNote = await Notes.create( { title, description, status,createdBy:user?._id.toString() });
-
-        res.status(201).json({
-            success: true,
-            message: "Note created successfully",
-            newNote,
-        });
-    } catch (error) {
-        console.log(error.message)
-        res.status(500).json({
-            success: false,
-            message: "Internal server error",
-            error: error.message,
-        });
-    }
-
+    res.status(201).json({
+      success: true,
+      message: "Note created successfully",
+      newNote,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
 }
-
-
 
 export const getMyNotes = async (req, res) => {
   try {
-    const myNotes = await Notes.find({ createdBy: req.user._id.toString() }).populate()
+    const myNotes = await Notes.find({
+      createdBy: req.user._id.toString(),
+    }).populate();
     res.status(200).json({
       success: true,
       message: "Notes fetched successfully",
       myNotes,
-  })
-    
+    });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Server error fetching tickets' });
+    res.status(500).json({ message: "Server error fetching tickets" });
   }
 };
 
-
-
 export async function getNoteById(req, res) {
-    try {
-        const { id } = req.params;
-        
-        const note = await Notes.findOne({_id: id});
+  try {
+    const { id } = req.params;
 
-        if (!note) {
-            return res.status(404).json({
-                success: false,
-                message: "Note not found",
-            });
-        }
+    const note = await Notes.findOne({ _id: id });
 
-        res.status(200).json({
-            success: true,
-            message: "Note fetched successfully",
-            note,
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: "Internal server error",
-            error: error.message,
-        });
+    if (!note) {
+      return res.status(404).json({
+        success: false,
+        message: "Note not found",
+      });
     }
-}   
 
+    res.status(200).json({
+      success: true,
+      message: "Note fetched successfully",
+      note,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+}
 
-export async function updateNote(req,res){
-
-
+export async function updateNote(req, res) {
   const { id } = req.params;
   const updates = req.body;
 
@@ -90,14 +83,18 @@ export async function updateNote(req,res){
     });
 
     if (!updatedNote) {
-      return res.status(404).json({ message: 'Note not found' });
+      return res.status(404).json({ message: "Note not found" });
     }
 
-    res.status(200).json({ message: 'Note updated successfully',
+    res
+      .status(200)
+      .json({
+        message: "Note updated successfully",
         updatedNote,
-       success:true });
+        success: true,
+      });
   } catch (error) {
-    console.error('Update error:', error);
-    res.status(500).json({ message: 'Something went wrong', error });
+    console.error("Update error:", error);
+    res.status(500).json({ message: "Something went wrong", error });
   }
-};
+}

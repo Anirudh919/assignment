@@ -1,34 +1,30 @@
-import  mongoose from 'mongoose'
+import mongoose from "mongoose";
 
 const noteSchema = new mongoose.Schema(
   {
-    title: {
+    text: {
       type: String,
       required: true,
       trim: true,
     },
     description: {
       type: String,
-      required: true,
+      // required: true,
     },
-    status: {
-      type: String,
-      enum: ['pending', 'open', 'closed'],
-      default: 'pending',
-    },
-  
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       required: true,
     },
-    attachments: [{
-      type: String // file paths or URLs
-    }]
+    attachments: [
+      {
+        type: String, // file paths or URLs
+      },
+    ],
   },
   {
     timestamps: true, // adds createdAt and updatedAt fields
   }
 );
 
-export const Notes = mongoose.model('Notes', noteSchema);
+export const Notes = mongoose.model("Notes", noteSchema);

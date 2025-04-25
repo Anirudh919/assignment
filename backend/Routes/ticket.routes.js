@@ -1,27 +1,5 @@
-import express from 'express';
-// import { bookRoom, cancelRoom, checkoutRoom, createTicket, deleteRoomById, getAllRooms, getBookings, getRoomById, updateRoom } from '../Controllers/ticket.controller.js';
-import { isAuthenticated,validateUser } from '../Middlewares/protectedRoutes.js';
-
-
-// export const roomRoutes = express.Router();
-
-
-
-// roomRoutes.get("/",getAllRooms)
-// roomRoutes.get("/getrooms/:id",getRoomById)
-// roomRoutes.put("/book/:id",validateUser, bookRoom)
-
-// roomRoutes.put("/cancel/:id",validateUser,cancelRoom)
-
-
-// roomRoutes.put("/checkout/:id",validateUser,checkoutRoom)
-// roomRoutes.get("/getbookings/:userId",validateUser,getBookings)
-
-
-
-
-// roomRoutes.delete("/delete/:id", validateUser,deleteRoomById);
-
+import express from "express";
+import { isAuthenticated } from "../Middlewares/protectedRoutes.js";
 
 export const ticketRouter = express.Router();
 
@@ -31,22 +9,18 @@ import {
   getAllTickets,
   getMyTickets,
   getTicketById,
-  updateTicket
-} from '../Controllers/ticket.controller.js'
+  updateTicket,
+} from "../Controllers/ticket.controller.js";
 
+ticketRouter.get("/", getAllTickets); // all for admin, only own for user
+ticketRouter.get("/my-tickets", getMyTickets);
 
-ticketRouter.get('/', validateUser, getAllTickets); // all for admin, only own for user
-ticketRouter.get('/my-tickets',validateUser, getMyTickets);
+ticketRouter.get("/:id", getTicketById);
 
+ticketRouter.delete("/:id", deleteTicketById);
 
+ticketRouter.post("/create", createTicket);
 
-ticketRouter.get('/:id', validateUser, getTicketById);
-
-ticketRouter.delete("/:id",validateUser,deleteTicketById)
-
-
-ticketRouter.post("/create",validateUser,createTicket)
-
-ticketRouter.put("/update/:id",validateUser,updateTicket)
+ticketRouter.put("/update/:id", updateTicket);
 
 // module.exports = {ticketRouter};
